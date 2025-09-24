@@ -33,6 +33,8 @@ export const ProductCard = ({ product, onDelete, showActions = false }: ProductC
             <img
               src={product.image}
               alt={product.name}
+              referrerPolicy="no-referrer"
+              onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/placeholder.svg'; }}
               className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
           ) : (

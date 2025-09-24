@@ -20,7 +20,7 @@ const Index = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [query, setQuery] = useState<string>("");
   const [page, setPage] = useState<number>(1);
-  const [limit] = useState<number>(12);
+  const [limit] = useState<number>(8);
   const [total, setTotal] = useState<number>(0);
 
   useEffect(() => {
@@ -75,14 +75,7 @@ const Index = () => {
           </Link>
         </div>
 
-        <div className="mb-6">
-          <input
-            value={query}
-            onChange={(e) => { setPage(1); setQuery(e.target.value); }}
-            placeholder="Search products..."
-            className="w-full md:w-80 rounded-md border px-3 py-2"
-          />
-        </div>
+        {/* Removed inline search input; use header search instead */}
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {products.map((product) => (

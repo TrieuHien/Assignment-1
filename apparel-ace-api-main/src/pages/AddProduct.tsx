@@ -16,11 +16,13 @@ export const AddProduct = () => {
 
   const handleSubmit = async (product: Product) => {
     try {
+      console.log('Submitting product payload:', product);
       await apiRequest('/api/products', { method: 'POST', body: JSON.stringify(product) });
       toast.success("Product created successfully!");
       navigate('/');
     } catch (error) {
-      toast.error("Failed to create product. Please try again.");
+      const message = error instanceof Error && error.message ? error.message : 'Failed to create product. Please try again.';
+      toast.error(message);
       console.error('Error creating product:', error);
     }
   };

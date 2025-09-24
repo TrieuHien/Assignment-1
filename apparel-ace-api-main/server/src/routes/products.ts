@@ -5,7 +5,7 @@ const router = Router();
 
 // GET /api/products - list all products with optional search and pagination
 router.get('/', async (req, res) => {
-  const { q, page = '1', limit = '12' } = req.query as { q?: string; page?: string; limit?: string };
+  const { q, page = '1', limit = '8' } = req.query as { q?: string; page?: string; limit?: string };
   const pageNum = Math.max(parseInt(page as string, 10) || 1, 1);
   const limitNum = Math.min(Math.max(parseInt(limit as string, 10) || 12, 1), 100);
 
@@ -41,6 +41,8 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const { name, description, price, image } = req.body;
+    // eslint-disable-next-line no-console
+    console.log('POST /api/products payload:', req.body);
     const numericPrice = Number(price);
     if (!name || !description || price === undefined) {
       return res.status(400).json({ message: 'name, description, and price are required' });
@@ -51,7 +53,10 @@ router.post('/', async (req, res) => {
     const product = await Product.create({ name, description, price: numericPrice, image });
     res.status(201).json(product);
   } catch (error) {
-    res.status(500).json({ message: 'Failed to create product' });
+    // eslint-disable-next-line no-console
+    console.error('Create product error:', error);
+    const message = error instanceof Error ? error.message : 'Failed to create product';
+    res.status(500).json({ message });
   }
 });
 

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, ShoppingBag, Plus, Home, Package } from "lucide-react";
+import { Search, Home, Package } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export const Header = () => {
@@ -9,8 +9,17 @@ export const Header = () => {
       <div className="container flex h-16 max-w-screen-2xl items-center">
         <div className="mr-4 flex">
           <Link className="mr-4 flex items-center space-x-2 lg:mr-6" to="/">
-            <Package className="h-6 w-6 text-primary" />
-            <span className="hidden font-bold sm:inline-block">StyleStore</span>
+            <img
+              src="/logo.png"
+              alt="Logo"
+              className="h-6 w-6"
+              onError={(e) => {
+                // fallback to icon if logo.png missing
+                (e.currentTarget as HTMLImageElement).style.display = 'none';
+              }}
+            />
+            <Package className="h-6 w-6 text-primary hidden" />
+            <span className="hidden font-bold sm:inline-block">𝐖𝐀𝐕𝐄𝐋𝐎𝐎𝐊</span>
           </Link>
           <nav className="flex items-center gap-4 text-sm lg:gap-6">
             <Link
@@ -19,12 +28,7 @@ export const Header = () => {
             >
               <Home className="h-4 w-4" />
             </Link>
-            <Link
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
-              to="/add-product"
-            >
-              <Plus className="h-4 w-4" />
-            </Link>
+            {/* Removed add-product plus icon */}
           </nav>
         </div>
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
@@ -46,10 +50,7 @@ export const Header = () => {
               />
             </div>
           </div>
-          <Button variant="ghost" size="icon">
-            <ShoppingBag className="h-5 w-5" />
-            <span className="sr-only">Shopping cart</span>
-          </Button>
+          {/* Removed shopping cart icon */}
         </div>
       </div>
     </header>

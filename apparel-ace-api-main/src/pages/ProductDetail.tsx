@@ -36,6 +36,17 @@ export const ProductDetail = () => {
     })();
   }, [id]);
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="container mx-auto py-8">
+          <div className="text-center text-muted-foreground">Loading...</div>
+        </div>
+      </div>
+    );
+  }
+
   if (!loading && !product) {
     return (
       <div className="min-h-screen bg-background">
@@ -83,7 +94,9 @@ export const ProductDetail = () => {
                 {product?.image ? (
                   <img
                     src={product.image}
-                    alt={product.name}
+                    alt={product?.name || 'Product image'}
+                    referrerPolicy="no-referrer"
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/placeholder.svg'; }}
                     className="h-full w-full object-cover"
                   />
                 ) : (
@@ -98,16 +111,16 @@ export const ProductDetail = () => {
           {/* Product Details */}
           <div className="space-y-6">
             <div>
-              <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
+              <h1 className="text-3xl font-bold mb-2">{product?.name}</h1>
               <Badge variant="secondary" className="text-xl font-bold px-4 py-2">
-                ${product.price.toFixed(2)}
+                ${product?.price.toFixed(2)}
               </Badge>
             </div>
 
             <div>
               <h3 className="font-semibold mb-2 text-lg">Description</h3>
               <p className="text-muted-foreground leading-relaxed">
-                {product.description}
+                {product?.description}
               </p>
             </div>
 
@@ -136,16 +149,7 @@ export const ProductDetail = () => {
               </div>
             </div>
 
-            <Card className="bg-secondary/50">
-              <CardContent className="p-6">
-                <h3 className="font-semibold mb-2">Product Information</h3>
-                <div className="space-y-1 text-sm text-muted-foreground">
-                  <div>Product ID: {product._id}</div>
-                  <div>Category: Clothing</div>
-                  <div>Availability: In Stock</div>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Removed Product Information section as requested */}
           </div>
         </div>
       </div>
