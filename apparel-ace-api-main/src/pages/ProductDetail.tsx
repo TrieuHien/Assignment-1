@@ -6,6 +6,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { apiRequest } from "@/lib/utils";
 import { useEffect, useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 interface Product {
   _id: string;
@@ -21,6 +22,7 @@ export const ProductDetail = () => {
   
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const { token } = useAuth();
 
   useEffect(() => {
     (async () => {
@@ -130,23 +132,25 @@ export const ProductDetail = () => {
                 Add to Cart
               </Button>
               
-              <div className="grid grid-cols-2 gap-4">
-                <Link to={`/edit-product/${product._id}`}>
-                  <Button variant="outline" className="w-full">
-                    <Edit className="mr-2 h-4 w-4" />
-                    Edit Product
+              {token && (
+                <div className="grid grid-cols-2 gap-4">
+                  <Link to={`/edit-product/${product._id}`}>
+                    <Button variant="outline" className="w-full">
+                      <Edit className="mr-2 h-4 w-4" />
+                      Edit Product
+                    </Button>
+                  </Link>
+                  
+                  <Button 
+                    variant="destructive" 
+                    onClick={handleDelete}
+                    className="w-full"
+                  >
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Delete Product
                   </Button>
-                </Link>
-                
-                <Button 
-                  variant="destructive" 
-                  onClick={handleDelete}
-                  className="w-full"
-                >
-                  <Trash2 className="mr-2 h-4 w-4" />
-                  Delete Product
-                </Button>
-              </div>
+                </div>
+              )}
             </div>
 
             {/* Removed Product Information section as requested */}

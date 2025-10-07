@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import Product from '../models/Product';
+import { requireAuth } from '../middleware/auth';
 
 const router = Router();
 
@@ -38,7 +39,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // POST /api/products - create product
-router.post('/', async (req, res) => {
+router.post('/', requireAuth, async (req, res) => {
   try {
     const { name, description, price, image } = req.body;
     // eslint-disable-next-line no-console
@@ -61,7 +62,7 @@ router.post('/', async (req, res) => {
 });
 
 // PUT /api/products/:id - update product
-router.put('/:id', async (req, res) => {
+router.put('/:id', requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
     const { name, description, price, image } = req.body;
@@ -82,7 +83,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // DELETE /api/products/:id - delete product
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
     const product = await Product.findByIdAndDelete(id);

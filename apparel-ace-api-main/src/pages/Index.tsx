@@ -6,6 +6,7 @@ import { Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 import { apiRequest } from "@/lib/utils";
 import { useEffect, useMemo, useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 interface Product {
   _id: string;
@@ -18,6 +19,7 @@ interface Product {
 const Index = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const { token } = useAuth();
   const [query, setQuery] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const [limit] = useState<number>(8);
@@ -83,7 +85,7 @@ const Index = () => {
               key={product._id}
               product={{ id: product._id, name: product.name, description: product.description, price: product.price, image: product.image }}
               onDelete={handleDeleteProduct}
-              showActions={true}
+              showActions={!!token}
             />
           ))}
         </div>

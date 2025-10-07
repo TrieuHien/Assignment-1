@@ -1,9 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Home, Package } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 export const Header = () => {
+  const { token, logout } = useAuth();
+  const navigate = useNavigate();
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 max-w-screen-2xl items-center">
@@ -50,7 +53,25 @@ export const Header = () => {
               />
             </div>
           </div>
-          {/* Removed shopping cart icon */}
+          <div className="flex items-center gap-2">
+            {!token ? (
+              <>
+                <Link to="/login">
+                  <Button variant="ghost">Login</Button>
+                </Link>
+                <Link to="/signup">
+                  <Button>Sign Up</Button>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to="/add-product">
+                  <Button>Add Product</Button>
+                </Link>
+                <Button variant="outline" onClick={() => { logout(); navigate('/'); }}>Logout</Button>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </header>
