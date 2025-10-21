@@ -55,3 +55,4 @@ const OrderSchema = new Schema<OrderDocument>(
 const Order = model<OrderDocument>('Order', OrderSchema);
 
 export default Order;
+

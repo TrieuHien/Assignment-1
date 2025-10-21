@@ -1,12 +1,12 @@
 import express from 'express';
 import Order, { OrderDocument } from '../models/Order';
 import Product from '../models/Product';
-import { requireAuth } from '../middleware/auth';
+import { requireAuth, AuthRequest } from '../middleware/auth';
 
 const router = express.Router();
 
 // Get user's orders
-router.get('/', requireAuth, async (req, res) => {
+router.get('/', requireAuth, async (req: AuthRequest, res) => {
   try {
     const userId = req.userId;
     const orders = await Order.find({ userId }).sort({ createdAt: -1 });
@@ -18,7 +18,7 @@ router.get('/', requireAuth, async (req, res) => {
 });
 
 // Get specific order
-router.get('/:id', requireAuth, async (req, res) => {
+router.get('/:id', requireAuth, async (req: AuthRequest, res) => {
   try {
     const userId = req.userId;
     const order = await Order.findOne({ _id: req.params.id, userId });
@@ -35,7 +35,7 @@ router.get('/:id', requireAuth, async (req, res) => {
 });
 
 // Create new order
-router.post('/', requireAuth, async (req, res) => {
+router.post('/', requireAuth, async (req: AuthRequest, res) => {
   try {
     const userId = req.userId;
     const { items, shippingAddress } = req.body;
@@ -82,7 +82,7 @@ router.post('/', requireAuth, async (req, res) => {
 });
 
 // Update order status (for admin or payment processing)
-router.patch('/:id/status', requireAuth, async (req, res) => {
+router.patch('/:id/status', requireAuth, async (req: AuthRequest, res) => {
   try {
     const userId = req.userId;
     const { status } = req.body;
