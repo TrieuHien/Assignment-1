@@ -85,7 +85,7 @@ const Index = () => {
               key={product._id}
               product={{ id: product._id, name: product.name, description: product.description, price: product.price, image: product.image }}
               onDelete={handleDeleteProduct}
-              showActions={!!token}
+              showActions={false}
             />
           ))}
         </div>

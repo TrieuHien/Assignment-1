@@ -1,8 +1,9 @@
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Eye, Edit, Trash2, ShoppingCart } from "lucide-react";
+import { Eye, Edit, Trash2, ShoppingCart, Package } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useCart } from "@/context/CartContext";
 
 interface Product {
   id: string;
@@ -19,10 +20,21 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ product, onDelete, showActions = false }: ProductCardProps) => {
+  const { addItem } = useCart();
+  
   const handleDelete = () => {
     if (onDelete && window.confirm('Are you sure you want to delete this product?')) {
       onDelete(product.id);
     }
+  };
+
+  const handleAddToCart = () => {
+    addItem({
+      productId: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image
+    });
   };
 
   return (
@@ -84,7 +96,7 @@ export const ProductCard = ({ product, onDelete, showActions = false }: ProductC
           )}
           
           {!showActions && (
-            <Button className="flex-1" size="sm">
+            <Button className="flex-1" size="sm" onClick={handleAddToCart}>
               <ShoppingCart className="mr-2 h-4 w-4" />
               Add to Cart
             </Button>
@@ -94,6 +106,3 @@ export const ProductCard = ({ product, onDelete, showActions = false }: ProductC
     </Card>
   );
 };
-
-// Fix missing Package import
-import { Package } from "lucide-react";

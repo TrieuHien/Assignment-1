@@ -7,6 +7,7 @@ import { Header } from "@/components/Header";
 import { apiRequest } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { useCart } from "@/context/CartContext";
 
 interface Product {
   _id: string;
@@ -23,6 +24,7 @@ export const ProductDetail = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const { token } = useAuth();
+  const { addItem } = useCart();
 
   useEffect(() => {
     (async () => {
@@ -72,6 +74,16 @@ export const ProductDetail = () => {
       await apiRequest(`/api/products/${product._id}`, { method: 'DELETE' });
       navigate('/');
     }
+  };
+
+  const handleAddToCart = () => {
+    if (!product) return;
+    addItem({
+      productId: product._id,
+      name: product.name,
+      price: product.price,
+      image: product.image
+    });
   };
 
   return (
@@ -127,7 +139,7 @@ export const ProductDetail = () => {
             </div>
 
             <div className="space-y-4">
-              <Button className="w-full" size="lg">
+              <Button className="w-full" size="lg" onClick={handleAddToCart}>
                 <ShoppingCart className="mr-2 h-5 w-5" />
                 Add to Cart
               </Button>

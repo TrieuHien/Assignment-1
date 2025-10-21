@@ -1,11 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Home, Package } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Search, Home, Package, ShoppingCart, User } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
+import { useCart } from "@/context/CartContext";
 
 export const Header = () => {
   const { token, logout } = useAuth();
+  const { getTotalItems } = useCart();
   const navigate = useNavigate();
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -21,8 +24,7 @@ export const Header = () => {
                 (e.currentTarget as HTMLImageElement).style.display = 'none';
               }}
             />
-            <Package className="h-6 w-6 text-primary hidden" />
-            <span className="hidden font-bold sm:inline-block">𝐖𝐀𝐕𝐄𝐋𝐎𝐎𝐊</span>
+            <span className="hidden font-bold sm:inline-block">FASHION</span>
           </Link>
           <nav className="flex items-center gap-4 text-sm lg:gap-6">
             <Link
@@ -65,10 +67,28 @@ export const Header = () => {
               </>
             ) : (
               <>
-                <Link to="/add-product">
-                  <Button>Add Product</Button>
+                <Link to="/manage-products">
+                  <Button variant="ghost" size="sm">
+                    <Package className="h-4 w-4 mr-1" />
+                    Manage
+                  </Button>
                 </Link>
-                <Button variant="outline" onClick={() => { logout(); navigate('/'); }}>Logout</Button>
+                <Link to="/orders">
+                  <Button variant="ghost" size="sm">
+                    Orders
+                  </Button>
+                </Link>
+                <Link to="/cart" className="relative">
+                  <Button variant="ghost" size="sm">
+                    <ShoppingCart className="h-4 w-4" />
+                    {getTotalItems() > 0 && (
+                      <Badge className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs">
+                        {getTotalItems()}
+                      </Badge>
+                    )}
+                  </Button>
+                </Link>
+                <Button variant="outline" onClick={() => { logout(); navigate('/'); }}>Sign Out</Button>
               </>
             )}
           </div>
